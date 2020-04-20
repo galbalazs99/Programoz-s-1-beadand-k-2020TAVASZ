@@ -1,0 +1,42 @@
+def precedencia(x, y):
+    if y == '(':
+        return False
+
+    op_precedencia = {
+        '+': 1,
+        '-': 1,
+        '*': 2,
+        '/': 2,
+        '^': 3
+    }
+
+    return op_precedencia.get(x) <= op_precedencia.get(y)
+
+
+def main():
+    n = int(input("Adja meg a tesztesetek számát: "))
+    for i in range(n):
+        beolvasas = input("Adjon meg egy kifejezést: ")
+        operatorok = []
+        postfixalak = ''
+
+        for j in beolvasas:
+            if j.isalpha():
+                postfixalak += j
+            else:
+                if j == '(':
+                    operatorok.append(j)
+                elif j == ')':
+                    operator = operatorok.pop()
+                    while operator != '(':
+                        postfixalak += operator
+                        operator = operatorok.pop()
+                else:
+                    while len(operatorok) > 0 and precedencia(j, operatorok[-1]):
+                        postfixalak += operatorok.pop()
+                    operatorok.append(j)
+
+        print(postfixalak)
+
+
+main()
